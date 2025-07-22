@@ -1,28 +1,20 @@
-# Stage 1: Build environment (install dependencies)
-FROM python:3.11-slim as builder
+# Use Python 3.12 slim image as base
+FROM python:3.12-slim
 
+# Set working directory in container
 WORKDIR /app
 
-# Install pip dependencies
+# Copy requirements file
 COPY requirements.txt .
-RUN pip install --upgrade pip \
- && pip install --prefix=/python -r requirements.txt
 
-# Copy source code
-COPY app/ .
+# Install Python dependencies
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Stage 2: Distroless image
-FROM gcr.io/distroless/python3-debian11
+# Copy application code
+COPY main.py .
 
-# Set working directory
-WORKDIR /app
+# Expose port 8000
+EXPOSE 8000
 
-# Copy installed site-packages and source code from builder
-COPY --from=builder /python /python
-COPY --from=builder /app /app
-
-# Set Python path so it can find packages
-ENV PYTHONPATH=/python
-
-# Specify the command
-CMD ["main.py"]
+# Command to run the application
+CMD ["fastapi", "dev", "main.py", "--host", "0.0.0.0", "--port", "8000"] 
