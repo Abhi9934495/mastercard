@@ -38,3 +38,29 @@ docker build -t mastercard-api .
 ```bash
 docker run -d -p 8000:8000 --name mastercard-fastapi mastercard-api
 ```
+
+## Uni tests
+
+================================================================================================= tests coverage ==================================================================================================
+________________________________________________________________________________ coverage: platform darwin, python 3.12.9-final-0 _________________________________________________________________________________
+
+Name      Stmts   Miss  Cover   Missing
+---------------------------------------
+main.py      45      0   100%
+---------------------------------------
+TOTAL        45      0   100%
+Coverage HTML written to dir htmlcov
+Required test coverage of 90% reached. Total coverage: 100.00%
+================================================================================================ 9 passed in 1.55s ===============================================================================================
+
+
+Commands
+
+```bash
+pytest test_main.py -v
+```
+
+Coverage
+```bash
+pytest test_main.py --cov=main --cov-report=term-missing --cov-report=html --cov-fail-under=90 -v
+```
